@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>my_uvms_control</name>
+  <version>0.0.1</version>
+  <description>Simple coordination node built on top of the low-level UVMS wrappers.</description>
+  <maintainer email="user@example.com">OpenAI</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_python</buildtool_depend>
+
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>my_uvms_drivers</exec_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

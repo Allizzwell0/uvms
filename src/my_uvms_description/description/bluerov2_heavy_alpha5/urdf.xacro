@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:macro name="bluerov2_heavy_alpha5_urdf" params="prefix joint_limits_file mount_rotation:=^|0">
+    <link name="${prefix}manipulator_mount_link">
+      <visual>
+        <origin rpy="0 0 0" xyz="0 0 0" />
+        <geometry>
+          <box size="0.001 0.001 0.001" />
+        </geometry>
+      </visual>
+      <inertial>
+        <mass value="0.0001" />
+        <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001" />
+      </inertial>
+    </link>
+
+    <link name="${prefix}ballast_link">
+      <inertial>
+        <mass value="0.0001" />
+        <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001" />
+      </inertial>
+      <collision>
+        <geometry><box size="0.2285 0.2875 0.015" /></geometry>
+        <origin rpy="0 0 0" xyz="0.11425 0.14375 0.08" />
+      </collision>
+      <collision>
+        <geometry><box size="0.2285 0.2875 0.035" /></geometry>
+        <origin rpy="0 0 0" xyz="0.11425 -0.14375 0.08" />
+      </collision>
+      <collision>
+        <geometry><box size="0.2285 0.2875 0.005" /></geometry>
+        <origin rpy="0 0 0" xyz="-0.11425 -0.14375 0.08" />
+      </collision>
+    </link>
+
+    <joint name="${prefix}manipulator_mount_joint" type="fixed">
+      <origin rpy="0 0 0" xyz="0.24 -0.099 0.029" />
+      <parent link="${prefix}base_link" />
+      <child link="${prefix}manipulator_mount_link" />
+    </joint>
+
+    <joint name="${prefix}ballast_joint" type="fixed">
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <parent link="${prefix}base_link" />
+      <child link="${prefix}ballast_link" />
+    </joint>
+
+    <xacro:include filename="$(find blue_description)/description/bluerov2_heavy_reach/urdf.xacro" />
+    <xacro:include filename="$(find reach_description)/description/alpha_5/urdf.xacro" />
+    <xacro:include filename="$(find reach_description)/description/alpha_5/standard_jaws/standard_jaws.urdf.xacro" />
+
+    <xacro:bluerov2_heavy_reach_urdf prefix="${prefix}" />
+
+    <xacro:alpha_5_urdf
+      parent="${prefix}manipulator_mount_link"
+      prefix="${prefix}alpha_"
+      joint_limits_file="${joint_limits_file}"
+      mount_rotation="${mount_rotation}">
+      <origin xyz="0.0374 0 0.0225" rpy="0 0 0" />
+    </xacro:alpha_5_urdf>
+
+    <xacro:standard_jaws
+      parent="${prefix}alpha_rs1_124_link"
+      prefix="${prefix}alpha_"
+      mimic_joint="${prefix}alpha_axis_a" />
+  </xacro:macro>
+
+</robot>

@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<robot name="bluerov2_heavy_alpha5" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:arg name="use_mock_hardware" default="true" />
+  <xacro:arg name="serial_port" default="" />
+  <xacro:arg name="prefix" default="" />
+  <xacro:arg name="use_sim" default="false" />
+  <xacro:arg name="controllers_file" default="$(find my_uvms_description)/config/bluerov2_heavy_alpha5/controllers.yaml" />
+  <xacro:arg name="joint_limits_file" default="$(find reach_description)/config/alpha_5/joint_limits.yaml" />
+  <xacro:arg name="initial_positions_file" default="$(find reach_description)/config/alpha_5/initial_positions.yaml" />
+  <xacro:arg name="mount_rotation" default="0" />
+
+  <xacro:include filename="$(find my_uvms_description)/description/bluerov2_heavy_alpha5/urdf.xacro" />
+  <xacro:include filename="$(find blue_description)/description/bluerov2_heavy_reach/gazebo.xacro" />
+  <xacro:include filename="$(find reach_description)/description/alpha_5/ros2_control.xacro" />
+  <xacro:include filename="$(find reach_description)/description/alpha_5/gz.xacro" />
+
+  <xacro:bluerov2_heavy_alpha5_urdf
+    prefix="$(arg prefix)"
+    joint_limits_file="$(arg joint_limits_file)"
+    mount_rotation="$(arg mount_rotation)" />
+
+  <xacro:alpha_5_system
+    prefix="$(arg prefix)alpha_"
+    serial_port="$(arg serial_port)"
+    initial_positions_file="$(arg initial_positions_file)"
+    joint_limits_file="$(arg joint_limits_file)"
+    use_sim="$(arg use_sim)"
+    use_mock_hardware="$(arg use_mock_hardware)" />
+
+  <xacro:if value="$(arg use_sim)">
+    <xacro:bluerov2_heavy_reach_gazebo prefix="$(arg prefix)" />
+    <xacro:alpha_5_gazebo prefix="$(arg prefix)alpha_" controllers_file="$(arg controllers_file)" />
+  </xacro:if>
+</robot>

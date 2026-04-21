@@ -1,0 +1,56 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    forward_position_controller:
+      type: forward_command_controller/ForwardCommandController
+
+    tcp_position_controller:
+      type: forward_command_controller/ForwardCommandController
+
+    feedback_joint_position_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    tcp_joint_position_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+forward_position_controller:
+  ros__parameters:
+    joints:
+      - alpha_axis_b
+      - alpha_axis_c
+      - alpha_axis_d
+      - alpha_axis_e
+    interface_name: position
+
+tcp_position_controller:
+  ros__parameters:
+    joints:
+      - alpha_axis_a
+    interface_name: position
+
+feedback_joint_position_trajectory_controller:
+  ros__parameters:
+    joints:
+      - alpha_axis_b
+      - alpha_axis_c
+      - alpha_axis_d
+      - alpha_axis_e
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+
+tcp_joint_position_trajectory_controller:
+  ros__parameters:
+    joints:
+      - alpha_axis_a
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
